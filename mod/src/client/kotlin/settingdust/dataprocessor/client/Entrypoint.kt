@@ -1,4 +1,4 @@
-package settingdust.template.client
+package settingdust.dataprocessor.client
 
 import com.terraformersmc.modmenu.api.ModMenuApi
 

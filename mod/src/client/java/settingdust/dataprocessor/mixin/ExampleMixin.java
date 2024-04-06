@@ -1,4 +1,4 @@
-package settingdust.template.mixin;
+package settingdust.dataprocessor.mixin;
 
 import net.minecraft.client.gui.screen.TitleScreen;
 import org.spongepowered.asm.mixin.Mixin;

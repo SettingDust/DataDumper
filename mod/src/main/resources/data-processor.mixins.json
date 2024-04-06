@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "settingdust.template.mixin",
+  "package": "settingdust.dataprocessor.mixin",
   "refmap": "${id}.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
