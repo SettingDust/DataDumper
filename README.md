@@ -1,6 +1,6 @@
 Dump data from registry with regex and tag to use in data pack.
 
-![img.png](img.png)
+![img.png](https://github.com/SettingDust/DataDumper/blob/main/img.png?raw=true)
 <details>
 minecraft:oak_planks<br>
 minecraft:spruce_planks<br>
@@ -15,7 +15,7 @@ minecraft:crimson_planks<br>
 minecraft:warped_planks
 </details>
 
-![img_1.png](img_1.png)
+![img_1.png](https://github.com/SettingDust/DataDumper/blob/main/img_1.png?raw=true)
 <details>
 minecraft:chest<br>
 minecraft:ender_chest<br>
