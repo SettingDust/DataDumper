@@ -1,12 +1,29 @@
-## Feature
- - Only develop fabric but targeting quilt and forge(with Connector) as well with testing modules. 
- - Self updating template with GitHub action
- - SemVer and Conventional Commit for Git stuffs and generating changelog
- - Spotless for code styling
- - Git hook for spotless apply, check and conventional commit validation
- - Version catalog with Kotlin Script in settings.gradle.kts
- - Automate publish with mc-publish action. *Need configure secrets for platform
- - Auto checking dependencies version with dependabot
+Dump data from registry with regex and tag to use in data pack.
 
-## Usage
-Use this template and type in the name, description. The GitHub action will provide a repo with correct metadata
+![img.png](img.png)
+<details>
+minecraft:oak_planks<br>
+minecraft:spruce_planks<br>
+minecraft:birch_planks<br>
+minecraft:jungle_planks<br>
+minecraft:acacia_planks<br>
+minecraft:cherry_planks<br>
+minecraft:dark_oak_planks<br>
+minecraft:mangrove_planks<br>
+minecraft:bamboo_planks<br>
+minecraft:crimson_planks<br>
+minecraft:warped_planks
+</details>
+
+![img_1.png](img_1.png)
+<details>
+minecraft:chest<br>
+minecraft:ender_chest<br>
+minecraft:trapped_chest
+</details>
+
+## Commands
+
+- `/datadumper registries` Dump all registries keys
+- `/datadumper registry <key of the registry> <tag starts with '#'>`
+- `/datadumper registry <key of the registry> <regex to matching the id>`

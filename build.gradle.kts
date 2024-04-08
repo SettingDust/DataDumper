@@ -10,7 +10,7 @@ plugins {
     alias(catalog.plugins.semver)
 }
 
-group = "settingdust.dataprocessor"
+group = "settingdust.datadumper"
 
 version = semver.semVersion.toString()
 
@@ -25,6 +25,7 @@ subprojects {
             content { includeGroup("com.terraformersmc") }
         }
         maven("https://api.modrinth.com/maven") { content { includeGroup("maven.modrinth") } }
+        maven("https://oss.sonatype.org/content/repositories/snapshots")
     }
 }
 

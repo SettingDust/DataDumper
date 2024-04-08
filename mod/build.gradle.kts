@@ -3,6 +3,8 @@ plugins {
 
     alias(catalog.plugins.kotlin.jvm)
     alias(catalog.plugins.kotlin.plugin.serialization)
+
+    alias(catalog.plugins.explosion)
 }
 
 val id: String by rootProject.properties
@@ -13,23 +15,15 @@ val description: String by rootProject.properties
 base.archivesName = name
 
 loom {
-    splitEnvironmentSourceSets()
-
     mixin {
         defaultRefmapName = "$id.refmap.json"
 
         add("main", "$id.refmap.json")
-        add("client", "$id.client.refmap.json")
     }
 
     accessWidenerPath = file("src/main/resources/$id.accesswidener")
 
-    mods {
-        register(id) {
-            sourceSet(sourceSets["main"])
-            sourceSet(sourceSets["client"])
-        }
-    }
+    mods { register(id) { sourceSet(sourceSets["main"]) } }
 
     runs {
         configureEach { ideConfigGenerated(true) }
@@ -46,8 +40,9 @@ dependencies {
     modImplementation(catalog.fabric.api)
     modImplementation(catalog.fabric.kotlin)
 
-    val modClientImplementation by configurations
-    modClientImplementation(catalog.modmenu)
+    modImplementation(catalog.modmenu)
+
+    modImplementation(catalog.fabric.permissions)
 }
 
 kotlin { jvmToolchain(17) }
@@ -67,7 +62,7 @@ val metadata =
         "name" to name,
         "version" to version,
         "description" to description,
-        "source" to "https://github.com/SettingDust/DataProcessor",
+        "source" to "https://github.com/SettingDust/DataDumper",
         "minecraft" to "~1.20",
         "fabric_loader" to ">=0.12",
         "fabric_kotlin" to ">=1.10",

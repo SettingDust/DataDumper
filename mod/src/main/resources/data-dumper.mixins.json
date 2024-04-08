@@ -1,0 +1,15 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "settingdust.datadumper.mixin",
+    "refmap": "${id}.refmap.json",
+    "compatibilityLevel": "JAVA_17",
+    "mixins": [
+        "ArgumentTypesAccessor"
+    ],
+    "client": [
+    ],
+    "injectors": {
+        "defaultRequire": 1
+  }
+}

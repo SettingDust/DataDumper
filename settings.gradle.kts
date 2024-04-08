@@ -1,11 +1,14 @@
 apply(
-    from = "https://github.com/SettingDust/FabricKotlinTemplate/raw/main/common.settings.gradle.kts"
+    from =
+        "https://github.com/SettingDust/FabricKotlinTemplate/raw/main/common.settings.gradle.kts",
 )
 
 val minecraft = settings.extra["minecraft"]
 val kotlin = settings.extra["kotlin"]
 
-dependencyResolutionManagement.versionCatalogs.named("catalog") {}
+dependencyResolutionManagement.versionCatalogs.named("catalog") {
+    library("fabric-permissions", "me.lucko", "fabric-permissions-api").version("0.2-SNAPSHOT")
+}
 
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"

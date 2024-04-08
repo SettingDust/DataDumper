@@ -40,10 +40,10 @@ minecraft {
             configureEach { property("connector.clean.path", cleanArtifactJar) }
         }
 
-        create("client") { ideaModule = "DataProcessor.forge.main" }
+        create("client") { ideaModule = "DataDumper.forge.main" }
 
         create("server") {
-            ideaModule = "DataProcessor.forge.main"
+            ideaModule = "DataDumper.forge.main"
             args("--nogui")
         }
     }
