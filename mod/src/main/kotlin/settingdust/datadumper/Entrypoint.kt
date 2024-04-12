@@ -104,7 +104,7 @@ fun init() {
                                     context.getArgument("key", Identifier::class.java),
                                 )
                             val keys = context.source.registryManager.get(registry).keys
-                            sendRegistries(context, keys.sortedBy { it.value })
+                            sendRegistries(context, keys.sortedBy { it.value.toString() })
                             keys.size
                         }
                         .then(registryTag)
@@ -120,15 +120,13 @@ fun init() {
                                 .streamAllRegistries()
                                 .asSequence()
                                 .map { it.key }
-                                .sortedBy { it.value }
+                                .sortedBy { it.value.toString() }
                                 .toList()
                         sendRegistries(context, keys)
                         return@executes keys.size
                     },
                 )
-                .then(
-                    registry,
-                ),
+                .then(registry),
         )
     }
 }
