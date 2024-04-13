@@ -230,9 +230,9 @@ private fun dumpEntries(
     val codec =
         DynamicRegistries.getDynamicRegistries().find { it.key.equals(registryKey) }!!.elementCodec
             as Codec<Any>
-    val registryOps = RegistryOps.of(JsonOps.INSTANCE, registryManager)
     for (entry in entries) {
         GlobalScope.launch(Dispatchers.IO) {
+            val registryOps = RegistryOps.of(JsonOps.INSTANCE, registryManager)
             val outputFile =
                 output /
                     entry.key.orElseThrow().value.namespace /
