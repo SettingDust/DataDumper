@@ -1,4 +1,9 @@
 
+## [0.2.1] - 2024-04-13
+### :bug: Bug Fixes
+- [`cc0f7e6`](https://github.com/SettingDust/DataDumper/commit/cc0f7e6c76ff3d017ee75c5176fe7820c4e8f407) - avoid `ConcurrentModificationException` *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.2.0] - 2024-04-13
 ### :sparkles: New Features
 - [`b7c9669`](https://github.com/SettingDust/DataDumper/commit/b7c96698b12875c2fcef16c72a7fb8f8697a57cf) - commands for dump data json *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -17,3 +22,4 @@
 [0.1.0]: https://github.com/SettingDust/DataDumper/compare/0.0.0...0.1.0
 [0.1.1]: https://github.com/SettingDust/DataDumper/compare/0.1.0...0.1.1
 [0.2.0]: https://github.com/SettingDust/DataDumper/compare/0.1.1...0.2.0
+[0.2.1]: https://github.com/SettingDust/DataDumper/compare/0.2.0...0.2.1
