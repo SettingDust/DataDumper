@@ -25,5 +25,5 @@ minecraft:trapped_chest
 ## Commands
 
 - `/datadumper registries` Dump all registries keys
-- `/datadumper registry <key of the registry> <tag starts with '#'>`
-- `/datadumper registry <key of the registry> <regex to matching the id>`
+- `/datadumper registry <key of the registry> [tag/regex]`
+- `/datadumper entry <key of the registry> [tag/regex]`
