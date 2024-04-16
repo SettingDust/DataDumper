@@ -8,6 +8,7 @@ import com.mojang.serialization.JsonOps
 import java.util.regex.Pattern
 import kotlin.io.path.createParentDirectories
 import kotlin.io.path.div
+import kotlin.io.path.writeBytes
 import kotlin.io.path.writer
 import kotlin.streams.asSequence
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +28,7 @@ import net.minecraft.registry.RegistryOps
 import net.minecraft.registry.RegistryWrapper
 import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.registry.tag.TagKey
+import net.minecraft.resource.Resource
 import net.minecraft.server.command.CommandManager.argument
 import net.minecraft.server.command.CommandManager.literal
 import net.minecraft.server.command.ServerCommandSource
@@ -48,7 +50,7 @@ object DataDumper {
     }
 }
 
-val output = FabricLoader.getInstance().gameDir / "datadumper"
+val output = FabricLoader.getInstance().gameDir / ".datadumper"
 
 private val GSON = Gson()
 
@@ -220,6 +222,12 @@ fun init() {
                 .then(entry),
         )
     }
+}
+
+fun dumpFailedEntry(identifier: Identifier, resource: Resource) {
+    val outputFile = output / identifier.namespace / identifier.path
+    outputFile.createParentDirectories()
+    outputFile.writeBytes(resource.inputStream.readAllBytes())
 }
 
 private fun dumpEntries(

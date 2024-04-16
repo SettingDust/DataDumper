@@ -5,7 +5,8 @@
     "refmap": "${id}.refmap.json",
     "compatibilityLevel": "JAVA_17",
     "mixins": [
-        "ArgumentTypesAccessor"
+        "ArgumentTypesAccessor",
+        "RegistryLoaderMixin"
     ],
     "client": [
     ],

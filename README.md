@@ -1,4 +1,5 @@
-Dump data from registry with regex and tag to use in data pack.
+Dump data from registry with regex and tag to use in data pack.  
+Dump JSON that `Failed to parse`. Useful for debug mod like https://modrinth.com/mod/hocon-resource-loader
 
 ![img.png](https://github.com/SettingDust/DataDumper/blob/main/img.png?raw=true)
 <details>
@@ -25,5 +26,5 @@ minecraft:trapped_chest
 ## Commands
 
 - `/datadumper registries` Dump all registries keys
-- `/datadumper registry <key of the registry> [tag/regex]`
-- `/datadumper entry <key of the registry> [tag/regex]`
+- `/datadumper registry <key of the registry> [tag/regex]` Dump registry keys
+- `/datadumper entry <key of the registry> [tag/regex]` Dump data json files

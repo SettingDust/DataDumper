@@ -14,6 +14,8 @@ val description: String by rootProject.properties
 
 base.archivesName = name
 
+kotlin { jvmToolchain(17) }
+
 loom {
     mixin {
         defaultRefmapName = "$id.refmap.json"
@@ -44,8 +46,6 @@ dependencies {
 
     modImplementation(catalog.fabric.permissions)
 }
-
-kotlin { jvmToolchain(17) }
 
 java {
     // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
