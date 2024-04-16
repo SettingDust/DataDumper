@@ -1,4 +1,10 @@
 
+## [0.3.0] - 2024-04-16
+### :sparkles: New Features
+- [`c20048c`](https://github.com/SettingDust/DataDumper/commit/c20048ceab01461e6fe27f349b69fca99327e6f1) - dump failed entries *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`511c706`](https://github.com/SettingDust/DataDumper/commit/511c706bdbb453127f17444ece8be9d2189661f6) - avoid crash when create level if datapack invalid *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.2.1] - 2024-04-13
 ### :bug: Bug Fixes
 - [`cc0f7e6`](https://github.com/SettingDust/DataDumper/commit/cc0f7e6c76ff3d017ee75c5176fe7820c4e8f407) - avoid `ConcurrentModificationException` *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -23,3 +29,4 @@
 [0.1.1]: https://github.com/SettingDust/DataDumper/compare/0.1.0...0.1.1
 [0.2.0]: https://github.com/SettingDust/DataDumper/compare/0.1.1...0.2.0
 [0.2.1]: https://github.com/SettingDust/DataDumper/compare/0.2.0...0.2.1
+[0.3.0]: https://github.com/SettingDust/DataDumper/compare/0.2.1...0.3.0
