@@ -1,5 +1,6 @@
-Dump data from registry with regex and tag to use in data pack.  
-Dump JSON that `Failed to parse`. Useful for debug mod like https://modrinth.com/mod/hocon-resource-loader
+- Dump data from registry with regex and tag to use in data pack.  
+- Dump JSON that `Failed to parse`. Useful for debug mod like https://modrinth.com/mod/hocon-resource-loader
+- Avoid crash when create level if data pack invalid
 
 ![img.png](https://github.com/SettingDust/DataDumper/blob/main/img.png?raw=true)
 <details>
