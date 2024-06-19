@@ -1,4 +1,9 @@
 
+## [0.4.0] - 2024-06-19
+### :recycle: Refactors
+- [`d74b236`](https://github.com/SettingDust/DataDumper/commit/d74b236299153011fa95c66f8074d1a079b3cfae) - port to 1.21 *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.3.0] - 2024-04-16
 ### :sparkles: New Features
 - [`c20048c`](https://github.com/SettingDust/DataDumper/commit/c20048ceab01461e6fe27f349b69fca99327e6f1) - dump failed entries *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -30,3 +35,4 @@
 [0.2.0]: https://github.com/SettingDust/DataDumper/compare/0.1.1...0.2.0
 [0.2.1]: https://github.com/SettingDust/DataDumper/compare/0.2.0...0.2.1
 [0.3.0]: https://github.com/SettingDust/DataDumper/compare/0.2.1...0.3.0
+[0.4.0]: https://github.com/SettingDust/DataDumper/compare/0.3.0...0.4.0
