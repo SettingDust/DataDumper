@@ -38,8 +38,8 @@ jobs:
 
           # Only include this section if you wish to publish
           # your assets on CurseForge.
-#          curseforge-id: 890349
-#          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          #          curseforge-id: 890349
+          #          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           files: |
             build/libs/!(*-@(dev|sources|javadoc)).jar
@@ -61,7 +61,7 @@ jobs:
             21
 
       - name: Commit CHANGELOG.md
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: main
           commit_message: 'docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]'
