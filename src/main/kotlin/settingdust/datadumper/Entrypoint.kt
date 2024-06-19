@@ -46,7 +46,7 @@ object DataDumper {
     val logger = LogManager.getLogger()!!
 
     fun identifier(name: String): Identifier {
-        return Identifier(ID, name)
+        return Identifier.of(ID, name)
     }
 }
 

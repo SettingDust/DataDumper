@@ -19,21 +19,18 @@ public class RegistryLoaderMixin {
 
 
     @Inject(
-        method = "load(Lnet/minecraft/registry/RegistryOps$RegistryInfoGetter;" +
-                 "Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/registry/RegistryKey;" +
-                 "Lnet/minecraft/registry/MutableRegistry;Lcom/mojang/serialization/Decoder;Ljava/util/Map;)V",
+        method = "loadFromResource(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/registry/RegistryOps$RegistryInfoGetter;Lnet/minecraft/registry/MutableRegistry;Lcom/mojang/serialization/Decoder;Ljava/util/Map;)V",
         at = @At(
             value = "INVOKE",
             target = "Ljava/util/Map;put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"
         )
     )
     private static <E> void datadumper$dumpFailed(
-        final RegistryOps.RegistryInfoGetter registryInfoGetter,
         final ResourceManager resourceManager,
-        final RegistryKey<? extends Registry<E>> registryRef,
-        final MutableRegistry<E> newRegistry,
-        final Decoder<E> decoder,
-        final Map<RegistryKey<?>, Exception> exceptions,
+        final RegistryOps.RegistryInfoGetter infoGetter,
+        final MutableRegistry<E> registry,
+        final Decoder<E> elementDecoder,
+        final Map<RegistryKey<?>, Exception> errors,
         final CallbackInfo ci,
         @Local Identifier identifier,
         @Local Resource resource
