@@ -14,11 +14,14 @@ plugins {
     alias(catalog.plugins.fabric.loom)
 }
 
-apply("https://github.com/SettingDust/MinecraftGradleScripts/raw/main/gradle_issue_15754.gradle.kts")
+apply(
+    "https://github.com/SettingDust/MinecraftGradleScripts/raw/main/gradle_issue_15754.gradle.kts"
+)
 
 group = "settingdust.datadumper"
 
 val gitVersion: Closure<String> by extra
+
 version = gitVersion()
 
 val id: String by rootProject.properties
@@ -27,9 +30,7 @@ val author: String by rootProject.properties
 val description: String by rootProject.properties
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+    toolchain { languageVersion = JavaLanguageVersion.of(21) }
 
     // Still required by IDEs such as Eclipse and Visual Studio Code
     sourceCompatibility = JavaVersion.VERSION_21
@@ -92,4 +93,3 @@ tasks {
         filesMatching(listOf("fabric.mod.json", "*.mixins.json")) { expand(metadata) }
     }
 }
-
