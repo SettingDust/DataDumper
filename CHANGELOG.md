@@ -1,4 +1,9 @@
 
+## [0.5.1] - 2024-10-10
+### :bug: Bug Fixes
+- [`2db97d2`](https://github.com/SettingDust/DataDumper/commit/2db97d2261a522f67080fd32f9b9bddd9f68e636) - wrong version range *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.5.0] - 2024-10-10
 ### :sparkles: New Features
 - [`4eeb7e2`](https://github.com/SettingDust/DataDumper/commit/4eeb7e266668c76ed6fdda17f8d9fa0f5f6cb798) - support 1.20.1 + 1.21 *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -45,3 +50,4 @@
 [0.3.0]: https://github.com/SettingDust/DataDumper/compare/0.2.1...0.3.0
 [0.4.0]: https://github.com/SettingDust/DataDumper/compare/0.3.0...0.4.0
 [0.5.0]: https://github.com/SettingDust/DataDumper/compare/0.4.0...0.5.0
+[0.5.1]: https://github.com/SettingDust/DataDumper/compare/0.5.0...0.5.1
