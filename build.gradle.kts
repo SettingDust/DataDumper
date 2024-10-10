@@ -94,7 +94,7 @@ val metadata =
         "version" to version,
         "description" to description,
         "source" to "https://github.com/SettingDust/DataDumper",
-        "minecraft" to "[1.20.1, 1.22)",
+        "minecraft" to ">=1.20.1 <1.22",
         "fabric_loader" to ">=0.15",
         "fabric_kotlin" to ">=1.11",
         "modmenu" to "*",
