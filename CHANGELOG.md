@@ -1,4 +1,12 @@
 
+## [0.5.0] - 2024-10-10
+### :sparkles: New Features
+- [`4eeb7e2`](https://github.com/SettingDust/DataDumper/commit/4eeb7e266668c76ed6fdda17f8d9fa0f5f6cb798) - support 1.20.1 + 1.21 *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :wrench: Chores
+- [`8680000`](https://github.com/SettingDust/DataDumper/commit/868000011e4b978d06f61fd609ddfbc68817e2fb) - remove unused modules *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.4.0] - 2024-06-19
 ### :recycle: Refactors
 - [`d74b236`](https://github.com/SettingDust/DataDumper/commit/d74b236299153011fa95c66f8074d1a079b3cfae) - port to 1.21 *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -36,3 +44,4 @@
 [0.2.1]: https://github.com/SettingDust/DataDumper/compare/0.2.0...0.2.1
 [0.3.0]: https://github.com/SettingDust/DataDumper/compare/0.2.1...0.3.0
 [0.4.0]: https://github.com/SettingDust/DataDumper/compare/0.3.0...0.4.0
+[0.5.0]: https://github.com/SettingDust/DataDumper/compare/0.4.0...0.5.0
