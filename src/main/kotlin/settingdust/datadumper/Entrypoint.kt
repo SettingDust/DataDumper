@@ -1,6 +1,5 @@
 package settingdust.datadumper
 
-import com.google.gson.Gson
 import com.google.gson.stream.JsonWriter
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.serialization.Codec
@@ -37,22 +36,13 @@ import net.minecraft.text.HoverEvent
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import net.minecraft.util.JsonHelper
-import org.apache.logging.log4j.LogManager
 import settingdust.datadumper.mixin.ArgumentTypesAccessor
 
 object DataDumper {
     const val ID = "data-dumper"
-
-    val logger = LogManager.getLogger()!!
-
-    fun identifier(name: String): Identifier {
-        return Identifier.of(ID, name)
-    }
 }
 
 val output = FabricLoader.getInstance().gameDir / ".datadumper"
-
-private val GSON = Gson()
 
 fun init() {
     ArgumentTypesAccessor.register(

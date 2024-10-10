@@ -1,4 +1,4 @@
-extra["minecraft"] = "1.21"
+extra["minecraft"] = "1.20.1"
 
 apply("https://github.com/SettingDust/MinecraftGradleScripts/raw/main/common.gradle.kts")
 
@@ -9,6 +9,8 @@ apply("https://github.com/SettingDust/MinecraftGradleScripts/raw/main/fabric.gra
 apply("https://github.com/SettingDust/MinecraftGradleScripts/raw/main/modmenu.gradle.kts")
 
 dependencyResolutionManagement.versionCatalogs.named("catalog") {
+    library("minecraft-fabric-1.21", "com.mojang", "minecraft").version("1.21")
+
     library("fabric-permissions", "me.lucko", "fabric-permissions-api").version("0.2-SNAPSHOT")
 }
 
@@ -19,3 +21,7 @@ plugins {
 val name: String by settings
 
 rootProject.name = name
+
+include("versions")
+include("versions:1.20.1")
+include("versions:1.21")
