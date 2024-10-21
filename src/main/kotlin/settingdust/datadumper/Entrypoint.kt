@@ -238,11 +238,13 @@ private fun dumpEntries(
                     "${entry.key.orElseThrow().value.path}.json"
             outputFile.createParentDirectories()
 
-            outputFile.writer().use {
-                val jsonWriter = JsonWriter(it).apply { setIndent("  ") }
+            outputFile.writer().use { writer ->
+                val jsonWriter = JsonWriter(writer).apply { setIndent("  ") }
                 JsonHelper.writeSorted(
                     jsonWriter,
-                    codec.encodeStart(registryOps, entry.value()).result().orElseThrow(),
+                    codec.encodeStart(registryOps, entry.value()).getOrThrow(false) {
+                        error(it)
+                    },
                     null
                 )
             }
