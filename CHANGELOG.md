@@ -1,4 +1,9 @@
 
+## [0.5.2] - 2024-10-21
+### :sparkles: New Features
+- [`79058d7`](https://github.com/SettingDust/DataDumper/commit/79058d7b8ca2921aa484a5047345ebe78f3476b4) - log more info when error *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.5.1] - 2024-10-10
 ### :bug: Bug Fixes
 - [`2db97d2`](https://github.com/SettingDust/DataDumper/commit/2db97d2261a522f67080fd32f9b9bddd9f68e636) - wrong version range *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -51,3 +56,4 @@
 [0.4.0]: https://github.com/SettingDust/DataDumper/compare/0.3.0...0.4.0
 [0.5.0]: https://github.com/SettingDust/DataDumper/compare/0.4.0...0.5.0
 [0.5.1]: https://github.com/SettingDust/DataDumper/compare/0.5.0...0.5.1
+[0.5.2]: https://github.com/SettingDust/DataDumper/compare/0.5.1...0.5.2
