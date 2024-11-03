@@ -1,4 +1,9 @@
 
+## [0.5.3] - 2024-11-03
+### :recycle: Refactors
+- [`aa1f824`](https://github.com/SettingDust/DataDumper/commit/aa1f824349fb849cca49cbe34c343e99b8819853) - use fabric api for register argument type *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.5.2] - 2024-10-21
 ### :sparkles: New Features
 - [`79058d7`](https://github.com/SettingDust/DataDumper/commit/79058d7b8ca2921aa484a5047345ebe78f3476b4) - log more info when error *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -57,3 +62,4 @@
 [0.5.0]: https://github.com/SettingDust/DataDumper/compare/0.4.0...0.5.0
 [0.5.1]: https://github.com/SettingDust/DataDumper/compare/0.5.0...0.5.1
 [0.5.2]: https://github.com/SettingDust/DataDumper/compare/0.5.1...0.5.2
+[0.5.3]: https://github.com/SettingDust/DataDumper/compare/0.5.2...0.5.3
