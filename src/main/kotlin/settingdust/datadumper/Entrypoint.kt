@@ -14,13 +14,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import me.lucko.fabric.api.permissions.v0.Permissions
+import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.command.CommandSource
 import net.minecraft.command.argument.IdentifierArgumentType
 import net.minecraft.command.argument.serialize.ConstantArgumentSerializer
-import net.minecraft.registry.Registries
 import net.minecraft.registry.Registry
 import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.RegistryOps
@@ -36,30 +36,29 @@ import net.minecraft.text.HoverEvent
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import net.minecraft.util.JsonHelper
-import settingdust.datadumper.mixin.ArgumentTypesAccessor
 
 object DataDumper {
+    fun identifier(path: String) = Identifier(ID, path)
+
     const val ID = "data-dumper"
 }
 
 val output = FabricLoader.getInstance().gameDir / ".datadumper"
 
 fun init() {
-    ArgumentTypesAccessor.register(
-        Registries.COMMAND_ARGUMENT_TYPE,
-        "${DataDumper.ID}:tag",
+    ArgumentTypeRegistry.registerArgumentType(
+        DataDumper.identifier("tag"),
         TagArgumentType::class.java,
         ConstantArgumentSerializer.of(::TagArgumentType),
     )
 
-    ArgumentTypesAccessor.register(
-        Registries.COMMAND_ARGUMENT_TYPE,
-        "${DataDumper.ID}:regex",
+    ArgumentTypeRegistry.registerArgumentType(
+        DataDumper.identifier("regex"),
         RegexArgumentType::class.java,
         ConstantArgumentSerializer.of(::RegexArgumentType),
     )
 
-    CommandRegistrationCallback.EVENT.register { dispatcher, registryAccess, environment ->
+    CommandRegistrationCallback.EVENT.register { dispatcher, _, _ ->
         val registryTag =
             argument("tag", TagArgumentType()).executes { context ->
                 val registryKey =
@@ -179,9 +178,9 @@ fun init() {
                             val registry = context.source.registryManager.get(registryKey)
 
                             dumpEntries(
-                                registry.streamEntries().toList(),
-                                registryKey,
-                                context.source.registryManager
+                                    registry.streamEntries().toList(),
+                                    registryKey,
+                                    context.source.registryManager,
                             )
 
                             val keys = registry.keys
@@ -241,11 +240,11 @@ private fun dumpEntries(
             outputFile.writer().use { writer ->
                 val jsonWriter = JsonWriter(writer).apply { setIndent("  ") }
                 JsonHelper.writeSorted(
-                    jsonWriter,
-                    codec.encodeStart(registryOps, entry.value()).getOrThrow(false) {
-                        error(it)
-                    },
-                    null
+                        jsonWriter,
+                        codec.encodeStart(registryOps, entry.value()).getOrThrow(false) {
+                            error(it)
+                        },
+                        null,
                 )
             }
         }
