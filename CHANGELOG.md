@@ -1,4 +1,9 @@
 
+## [0.5.4] - 2024-11-06
+### :bug: Bug Fixes
+- [`6dfb662`](https://github.com/SettingDust/DataDumper/commit/6dfb662b7a066aa9f3a6cd2df92f02b3470abf41) - avoid the duplicated refmap json name *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.5.3] - 2024-11-03
 ### :recycle: Refactors
 - [`aa1f824`](https://github.com/SettingDust/DataDumper/commit/aa1f824349fb849cca49cbe34c343e99b8819853) - use fabric api for register argument type *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -63,3 +68,4 @@
 [0.5.1]: https://github.com/SettingDust/DataDumper/compare/0.5.0...0.5.1
 [0.5.2]: https://github.com/SettingDust/DataDumper/compare/0.5.1...0.5.2
 [0.5.3]: https://github.com/SettingDust/DataDumper/compare/0.5.2...0.5.3
+[0.5.4]: https://github.com/SettingDust/DataDumper/compare/0.5.3...0.5.4
