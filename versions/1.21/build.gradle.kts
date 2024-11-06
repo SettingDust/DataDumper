@@ -14,9 +14,9 @@ java {
 
 loom {
     mixin {
-        defaultRefmapName = "$id.refmap.json"
+        defaultRefmapName = "$id-1.21.refmap.json"
 
-        add("main", "$id.refmap.json")
+        add("main", defaultRefmapName.get())
     }
 
 //    accessWidenerPath = file("src/main/resources/$id.1.20.1.accesswidener")
