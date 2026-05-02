@@ -1,0 +1,5 @@
+{
+    "datadumper.message.clickToCopy": "Click to copy all entries.",
+    "datadumper.message.invalidTag": "Tag should starts with '#'",
+    "commands.datadumper.registries.feedback.player": "%s entries totally."
+}

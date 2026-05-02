@@ -1,0 +1,5 @@
+{
+    "datadumper.message.clickToCopy": "点击以复制全部条目",
+    "datadumper.message.invalidTag": "标签开头应该是'#'",
+    "commands.datadumper.registries.feedback.player": "共有%s项"
+}

@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "settingdust.data_dumper.v20_1.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "RegistryLoaderMixin"
+  ],
+  "client": [
+  ]
+}
