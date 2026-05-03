@@ -4,44 +4,52 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder
 import com.mojang.serialization.Codec
 import java.util.regex.Pattern
 import kotlin.streams.asSequence
-import net.minecraft.command.CommandSource
-import net.minecraft.command.argument.IdentifierArgumentType
-import net.minecraft.registry.Registry
-import net.minecraft.registry.RegistryKey
-import net.minecraft.registry.entry.RegistryEntry
-import net.minecraft.registry.tag.TagKey
-import net.minecraft.server.command.CommandManager.argument
-import net.minecraft.server.command.CommandManager.literal
-import net.minecraft.server.command.ServerCommandSource
-import net.minecraft.util.Identifier
+import net.minecraft.commands.CommandSourceStack
+import net.minecraft.commands.Commands.argument
+import net.minecraft.commands.Commands.literal
+import net.minecraft.core.Registry
+import net.minecraft.resources.ResourceKey
+import settingdust.data_dumper.util.ArgumentTypeAdapter
+import settingdust.data_dumper.util.CommonIdentifier
+import settingdust.data_dumper.util.RegistryAccessAdapter.Companion.lookupRegistryOrThrow
+import settingdust.data_dumper.util.RegistryAdapter.Companion.getOrCreateTag
+import settingdust.data_dumper.util.ResourceKeyAdapter
+import settingdust.data_dumper.util.ResourceKeyAdapter.Companion.getIdentifier
+import settingdust.data_dumper.util.SuggestResourceProvider
+import settingdust.data_dumper.util.TagKeyAdapter
 
 /**
  * Builds the datadumper command tree.
  *
- * @param permissionChecker checks if a source has a given permission (permission string, level) -> boolean
+ * @param permissionChecker checks if a source has a given permission
  * @param dynamicRegistryKeys provides identifiers of all dynamic registries (for entry command suggestions)
  * @param dynamicRegistryCodec provides the codec for a given dynamic registry key (for entry serialization)
  */
 fun buildCommands(
-    permissionChecker: (ServerCommandSource, String, Int) -> Boolean,
-    dynamicRegistryKeys: () -> Iterable<Identifier>,
-    dynamicRegistryCodec: (RegistryKey<out Registry<*>>) -> Codec<Any>?
-): LiteralArgumentBuilder<ServerCommandSource> {
+    permissionChecker: (CommandSourceStack) -> Boolean,
+    dynamicRegistryKeys: () -> Iterable<CommonIdentifier>,
+    dynamicRegistryCodec: (ResourceKey<out Registry<*>>) -> Codec<Any>?
+): LiteralArgumentBuilder<CommandSourceStack> {
     val registryTag =
         argument("tag", TagArgumentType()).executes { context ->
             val registryKey =
-                RegistryKey.ofRegistry<Any>(context.getArgument("key", Identifier::class.java))
-            val registry = context.source.registryManager.get(registryKey)
+                ResourceKeyAdapter.createRegistryKey<Any>(
+                    context.getArgument(
+                        "key",
+                        CommonIdentifier::class.java,
+                    ),
+                )
+            val registry = context.source.registryAccess().lookupRegistryOrThrow(registryKey)
 
             val keys =
                 registry
-                    .getOrCreateEntryList(
-                        TagKey.of(
+                    .getOrCreateTag(
+                        TagKeyAdapter.create(
                             registryKey,
-                            context.getArgument("tag", Identifier::class.java),
+                            context.getArgument("tag", CommonIdentifier::class.java),
                         ),
                     )
-                    .map { it.key.orElseThrow() }
+                    .map { it.unwrapKey().orElseThrow() }
             RegistryDumper.sendRegistries(context, keys)
 
             keys.size
@@ -49,16 +57,21 @@ fun buildCommands(
     val registryRegex =
         argument("regex", RegexArgumentType()).executes { context ->
             val registryKey =
-                RegistryKey.ofRegistry<Any>(context.getArgument("key", Identifier::class.java))
-            val registry = context.source.registryManager.get(registryKey)
+                ResourceKeyAdapter.createRegistryKey<Any>(
+                    context.getArgument(
+                        "key",
+                        CommonIdentifier::class.java,
+                    ),
+                )
+            val registry = context.source.registryAccess().lookupRegistryOrThrow(registryKey)
 
             val pattern = context.getArgument("regex", Pattern::class.java)
+
             val keys =
-                registry
-                    .streamEntries()
+                registry.asHolderIdMap()
                     .asSequence()
-                    .map { it.key.orElseThrow() }
-                    .filter { pattern.matcher(it.value.toString()).find() }
+                    .map { it.unwrapKey().orElseThrow() }
+                    .filter { pattern.matcher(it.getIdentifier().toString()).find() }
                     .toList()
 
             RegistryDumper.sendRegistries(context, keys)
@@ -68,22 +81,26 @@ fun buildCommands(
     val registry =
         literal("registry")
             .then(
-                argument("key", IdentifierArgumentType.identifier())
+                argument("key", ArgumentTypeAdapter.identifier())
                     .suggests { context, builder ->
-                        CommandSource.suggestIdentifiers(
-                            context.source.registryManager.streamAllRegistries().map {
-                                it.key.value
+                        SuggestResourceProvider.suggestResource(
+                            context.source.registryAccess().registries().map {
+                                it.key().getIdentifier()
                             },
                             builder,
                         )
                     }
                     .executes { context ->
                         val registry =
-                            RegistryKey.ofRegistry<Any>(
-                                context.getArgument("key", Identifier::class.java),
+                            ResourceKeyAdapter.createRegistryKey<Any>(
+                                context.getArgument("key", CommonIdentifier::class.java),
                             )
-                        val keys = context.source.registryManager.get(registry).keys
-                        RegistryDumper.sendRegistries(context, keys.sortedBy { it.value.toString() })
+                        val keys = context.source.registryAccess().lookupRegistryOrThrow(registry)
+                            .registryKeySet()
+                        RegistryDumper.sendRegistries(
+                            context,
+                            keys.sortedBy { it.getIdentifier().toString() },
+                        )
                         keys.size
                     }
                     .then(registryTag)
@@ -93,17 +110,30 @@ fun buildCommands(
     val entryTag =
         argument("tag", TagArgumentType()).executes { context ->
             val registryKey =
-                RegistryKey.ofRegistry<Any>(context.getArgument("key", Identifier::class.java))
-            val registry = context.source.registryManager.get(registryKey)
+                ResourceKeyAdapter.createRegistryKey<Any>(
+                    context.getArgument(
+                        "key",
+                        CommonIdentifier::class.java,
+                    ),
+                )
+            val registry = context.source.registryAccess().lookupRegistryOrThrow(registryKey)
 
-            val entryList =
-                registry.getOrCreateEntryList(
-                    TagKey.of(registryKey, context.getArgument("tag", Identifier::class.java)),
+            val holders =
+                registry.getOrCreateTag(
+                    TagKeyAdapter.create(
+                        registryKey,
+                        context.getArgument("tag", CommonIdentifier::class.java),
+                    ),
                 )
 
-            RegistryDumper.dumpEntries(entryList, registryKey, context.source.registryManager, dynamicRegistryCodec)
+            RegistryDumper.dumpEntries(
+                holders,
+                registryKey,
+                context.source.registryAccess(),
+                dynamicRegistryCodec,
+            )
 
-            val keys = entryList.map { it.key.orElseThrow() }
+            val keys = holders.map { it.unwrapKey().orElseThrow() }
             RegistryDumper.sendRegistries(context, keys)
 
             keys.size
@@ -111,50 +141,66 @@ fun buildCommands(
     val entryRegex =
         argument("regex", RegexArgumentType()).executes { context ->
             val registryKey =
-                RegistryKey.ofRegistry<Any>(context.getArgument("key", Identifier::class.java))
-            val registry = context.source.registryManager.get(registryKey)
+                ResourceKeyAdapter.createRegistryKey<Any>(
+                    context.getArgument(
+                        "key",
+                        CommonIdentifier::class.java,
+                    ),
+                )
+            val registry = context.source.registryAccess().lookupRegistryOrThrow(registryKey)
 
             val pattern = context.getArgument("regex", Pattern::class.java)
             val entries =
                 registry
-                    .streamEntries()
+                    .asHolderIdMap()
                     .asSequence()
-                    .filter { pattern.matcher(it.key.orElseThrow().value.toString()).find() }
+                    .filter {
+                        pattern.matcher(it.unwrapKey().orElseThrow().getIdentifier().toString()).find()
+                    }
                     .toList()
 
-            RegistryDumper.dumpEntries(entries, registryKey, context.source.registryManager, dynamicRegistryCodec)
+            RegistryDumper.dumpEntries(
+                entries,
+                registryKey,
+                context.source.registryAccess(),
+                dynamicRegistryCodec,
+            )
 
-            RegistryDumper.sendRegistries(context, entries.map { it.key.orElseThrow() })
+            RegistryDumper.sendRegistries(context, entries.map { it.unwrapKey().orElseThrow() })
 
             entries.size
         }
     val entry =
         literal("entry")
             .then(
-                argument("key", IdentifierArgumentType.identifier())
+                argument("key", ArgumentTypeAdapter.identifier())
                     .suggests { _, builder ->
-                        CommandSource.suggestIdentifiers(
+                        SuggestResourceProvider.suggestResource(
                             dynamicRegistryKeys(),
                             builder,
                         )
                     }
                     .executes { context ->
                         val registryKey =
-                            RegistryKey.ofRegistry<Any>(
-                                context.getArgument("key", Identifier::class.java),
+                            ResourceKeyAdapter.createRegistryKey<Any>(
+                                context.getArgument("key", CommonIdentifier::class.java),
                             )
-                        val registry = context.source.registryManager.get(registryKey)
+                        val registry =
+                            context.source.registryAccess().lookupRegistryOrThrow(registryKey)
 
                         @Suppress("UNCHECKED_CAST")
                         RegistryDumper.dumpEntries(
-                            registry.streamEntries().toList() as List<RegistryEntry<Any>>,
+                            registry.asHolderIdMap().toList(),
                             registryKey,
-                            context.source.registryManager,
+                            context.source.registryAccess(),
                             dynamicRegistryCodec,
                         )
 
-                        val keys = registry.keys
-                        RegistryDumper.sendRegistries(context, keys.sortedBy { it.value.toString() })
+                        val keys = registry.registryKeySet()
+                        RegistryDumper.sendRegistries(
+                            context,
+                            keys.sortedBy { it.getIdentifier().toString() },
+                        )
                         keys.size
                     }
                     .then(entryTag)
@@ -162,15 +208,15 @@ fun buildCommands(
             )
 
     return literal("datadumper")
-        .requires { source -> permissionChecker(source, "commands.datadumper", 4) }
+        .requires { source -> permissionChecker(source) }
         .then(
             literal("registries").executes { context ->
                 val keys =
-                    context.source.registryManager
-                        .streamAllRegistries()
+                    context.source.registryAccess()
+                        .registries()
                         .asSequence()
-                        .map { it.key }
-                        .sortedBy { it.value.toString() }
+                        .map { it.key() }
+                        .sortedBy { it.getIdentifier().toString() }
                         .toList()
                 RegistryDumper.sendRegistries(context, keys)
                 return@executes keys.size

@@ -2,9 +2,13 @@
   "required": true,
   "minVersion": "0.8",
   "package": "settingdust.data_dumper.v26_1.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "IdentifierMixin",
+    "RegistryDataLoaderMixin",
+    "RegistryLoadTaskPendingRegistrationMixin"
   ],
   "client": [
+    "CreateWorldScreenMixin"
   ]
 }

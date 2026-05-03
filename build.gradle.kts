@@ -143,10 +143,16 @@ class ContainerScope(
             isTransitive = false
 
             attributes {
-                attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, ArtifactTypeDefinition.JAR_TYPE)
+                attribute(
+                    ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE,
+                    ArtifactTypeDefinition.JAR_TYPE,
+                )
                 attribute(REMAPPED_ATTRIBUTE, false)
                 attribute(INCLUDE_TRANSFORMED_OUTPUT_ATTRIBUTE, false)
-                attribute(IncludeTransformationStateAttribute.ATTRIBUTE, IncludeTransformationStateAttribute.None)
+                attribute(
+                    IncludeTransformationStateAttribute.ATTRIBUTE,
+                    IncludeTransformationStateAttribute.None,
+                )
             }
         }
 
@@ -157,15 +163,22 @@ class ContainerScope(
             isTransitive = false
 
             attributes {
-                attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, ArtifactTypeDefinition.JAR_TYPE)
+                attribute(
+                    ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE,
+                    ArtifactTypeDefinition.JAR_TYPE,
+                )
                 attribute(REMAPPED_ATTRIBUTE, true)
                 attribute(INCLUDE_TRANSFORMED_OUTPUT_ATTRIBUTE, false)
-                attribute(IncludeTransformationStateAttribute.ATTRIBUTE, IncludeTransformationStateAttribute.None)
+                attribute(
+                    IncludeTransformationStateAttribute.ATTRIBUTE,
+                    IncludeTransformationStateAttribute.None,
+                )
                 attribute(RemapNamespaceAttribute.ATTRIBUTE, RemapNamespaceAttribute.INITIAL)
             }
         }
 
-    private val embedConfigurations = mutableMapOf<String, NamedDomainObjectProvider<Configuration>>()
+    private val embedConfigurations =
+        mutableMapOf<String, NamedDomainObjectProvider<Configuration>>()
 
     val jarTask = project.tasks.register<ShadowJar>(lowerCamelCaseGradleName(featureName, "jar")) {
         group = "build"
@@ -188,7 +201,8 @@ class ContainerScope(
             dependsOn(includeJarTask, includeDevJarTask)
         }
 
-        val containerCapability = "${project.group}:${project.name}-$capabilitySuffix:${project.version}"
+        val containerCapability =
+            "${project.group}:${project.name}-$capabilitySuffix:${project.version}"
 
         project.configurations.register(lowerCamelCaseGradleName(featureName, "runtimeElements")) {
             isCanBeResolved = false
@@ -200,7 +214,12 @@ class ContainerScope(
             outgoing.capability(containerCapability)
         }
 
-        project.configurations.register(lowerCamelCaseGradleName(featureName, "devRuntimeElements")) {
+        project.configurations.register(
+            lowerCamelCaseGradleName(
+                featureName,
+                "devRuntimeElements",
+            ),
+        ) {
             isCanBeResolved = false
             isCanBeConsumed = true
             attributes {
@@ -214,10 +233,16 @@ class ContainerScope(
     private fun AttributeContainer.applyRuntimeVariantAttributes(remapped: Boolean) {
         attribute(Usage.USAGE_ATTRIBUTE, project.objects.named(Usage.JAVA_RUNTIME))
         attribute(Category.CATEGORY_ATTRIBUTE, project.objects.named(Category.LIBRARY))
-        attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, project.objects.named(LibraryElements.JAR))
+        attribute(
+            LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE,
+            project.objects.named(LibraryElements.JAR),
+        )
         attribute(TargetAttributes.MOD_LOADER, loader)
         attribute(INCLUDE_TRANSFORMED_OUTPUT_ATTRIBUTE, false)
-        attribute(IncludeTransformationStateAttribute.ATTRIBUTE, IncludeTransformationStateAttribute.None)
+        attribute(
+            IncludeTransformationStateAttribute.ATTRIBUTE,
+            IncludeTransformationStateAttribute.None,
+        )
         attribute(REMAPPED_ATTRIBUTE, remapped)
         if (remapped) {
             attribute(RemapNamespaceAttribute.ATTRIBUTE, RemapNamespaceAttribute.INITIAL)
@@ -230,7 +255,12 @@ class ContainerScope(
         archiveClassifier: String = loader.toString().lowercase(),
         toIntermediateOutputs: Boolean = false,
     ): TaskProvider<out IncludesJar> = when (loader) {
-        MinecraftModLoader.fabric -> project.tasks.register<JarInJar>(lowerCamelCaseGradleName(featureName, name)) {
+        MinecraftModLoader.fabric -> project.tasks.register<JarInJar>(
+            lowerCamelCaseGradleName(
+                featureName,
+                name,
+            ),
+        ) {
             group = "build"
             this.archiveClassifier = archiveClassifier
             if (toIntermediateOutputs) {
@@ -255,19 +285,31 @@ class ContainerScope(
 
     private fun ModuleDependency.withIncludeAttributes() {
         attributes {
-            attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, ArtifactTypeDefinition.JAR_TYPE)
+            attribute(
+                ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE,
+                ArtifactTypeDefinition.JAR_TYPE,
+            )
             attribute(REMAPPED_ATTRIBUTE, false)
             attribute(INCLUDE_TRANSFORMED_OUTPUT_ATTRIBUTE, false)
-            attribute(IncludeTransformationStateAttribute.ATTRIBUTE, IncludeTransformationStateAttribute.None)
+            attribute(
+                IncludeTransformationStateAttribute.ATTRIBUTE,
+                IncludeTransformationStateAttribute.None,
+            )
         }
     }
 
     private fun ModuleDependency.withIncludeDevAttributes() {
         attributes {
-            attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, ArtifactTypeDefinition.JAR_TYPE)
+            attribute(
+                ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE,
+                ArtifactTypeDefinition.JAR_TYPE,
+            )
             attribute(REMAPPED_ATTRIBUTE, true)
             attribute(INCLUDE_TRANSFORMED_OUTPUT_ATTRIBUTE, false)
-            attribute(IncludeTransformationStateAttribute.ATTRIBUTE, IncludeTransformationStateAttribute.None)
+            attribute(
+                IncludeTransformationStateAttribute.ATTRIBUTE,
+                IncludeTransformationStateAttribute.None,
+            )
             attribute(RemapNamespaceAttribute.ATTRIBUTE, RemapNamespaceAttribute.INITIAL)
         }
     }
@@ -283,7 +325,7 @@ class ContainerScope(
         attributes {
             attribute(
                 LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE,
-                project.objects.named(LibraryElements.CLASSES_AND_RESOURCES)
+                project.objects.named(LibraryElements.CLASSES_AND_RESOURCES),
             )
             attribute(INCLUDE_TRANSFORMED_OUTPUT_ATTRIBUTE, false)
         }
@@ -291,14 +333,21 @@ class ContainerScope(
 
     private fun Configuration.applyTransformedJarAttributes() {
         attributes {
-            attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, ArtifactTypeDefinition.JAR_TYPE)
+            attribute(
+                ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE,
+                ArtifactTypeDefinition.JAR_TYPE,
+            )
             attribute(REMAPPED_ATTRIBUTE, false)
             attribute(INCLUDE_TRANSFORMED_OUTPUT_ATTRIBUTE, true)
-            attribute(IncludeTransformationStateAttribute.ATTRIBUTE, IncludeTransformationStateAttribute.None)
+            attribute(
+                IncludeTransformationStateAttribute.ATTRIBUTE,
+                IncludeTransformationStateAttribute.None,
+            )
         }
     }
 
-    inner class DependenciesScope(private val handler: DependencyHandler) : DependencyHandler by handler {
+    inner class DependenciesScope(private val handler: DependencyHandler) :
+        DependencyHandler by handler {
         private fun addTo(
             configuration: NamedDomainObjectProvider<Configuration>,
             dependencyNotation: Any,
@@ -311,16 +360,29 @@ class ContainerScope(
             return dependency
         }
 
-        fun include(dependencyNotation: Any, configure: ModuleDependency.() -> Unit = {}): Dependency? =
+        fun include(
+            dependencyNotation: Any,
+            configure: ModuleDependency.() -> Unit = {}
+        ): Dependency? =
             addTo(includeConfigurationProvider, dependencyNotation, configure)
 
-        fun includeDev(dependencyNotation: Any, configure: ModuleDependency.() -> Unit = {}): Dependency? =
+        fun includeDev(
+            dependencyNotation: Any,
+            configure: ModuleDependency.() -> Unit = {}
+        ): Dependency? =
             addTo(includeDevConfigurationProvider, dependencyNotation, configure)
 
-        fun embed(dependencyNotation: Any, configure: ModuleDependency.() -> Unit = {}): Dependency? =
+        fun embed(
+            dependencyNotation: Any,
+            configure: ModuleDependency.() -> Unit = {}
+        ): Dependency? =
             embed("", dependencyNotation, configure)
 
-        fun embed(name: String, dependencyNotation: Any, configure: ModuleDependency.() -> Unit = {}): Dependency? {
+        fun embed(
+            name: String,
+            dependencyNotation: Any,
+            configure: ModuleDependency.() -> Unit = {}
+        ): Dependency? {
             val configuration = embedConfigurations[name]
                 ?: throw IllegalArgumentException("embed('$name') is not registered for $featureName")
             return addTo(configuration, dependencyNotation, configure)
@@ -413,7 +475,10 @@ fun ClocheDependencyHandler.container(container: ContainerScope): Dependency =
 
         attributes {
             attribute(REMAPPED_ATTRIBUTE, true)
-            attribute(IncludeTransformationStateAttribute.ATTRIBUTE, IncludeTransformationStateAttribute.None)
+            attribute(
+                IncludeTransformationStateAttribute.ATTRIBUTE,
+                IncludeTransformationStateAttribute.None,
+            )
         }
     }
 
@@ -454,10 +519,6 @@ dependencies {
 
 // endregion
 
-lateinit var fabricContainer: ContainerScope
-lateinit var forgeContainer: ContainerScope
-lateinit var neoforgeContainer: ContainerScope
-
 cloche {
     // region Metadata & Mappings
 
@@ -492,7 +553,7 @@ cloche {
 
     val commonMain = common("common:common") {
         // mixins.from(file("src/common/common/main/resources/$id.mixins.json"))
-        // accessWideners.from(file("src/common/common/main/resources/$id.accessWidener"))
+        accessWideners.from(file("src/common/common/main/resources/$id.accessWidener"))
 
         dependencies {
             compileOnly("org.spongepowered:mixin:0.8.7")
@@ -501,15 +562,15 @@ cloche {
 
     val common201 = common("common:20.1") {
         dependsOn(commonMain)
-        // mixins.from("src/common/20.1/main/resources/$id.20_1.mixins.json")
+         mixins.from("src/common/20.1/main/resources/$id.20_1.mixins.json")
     }
     val common211 = common("common:21.1") {
         dependsOn(commonMain)
-        // mixins.from("src/common/21.1/main/resources/$id.21_1.mixins.json")
+         mixins.from("src/common/21.1/main/resources/$id.21_1.mixins.json")
     }
     val common261 = common("common:26.1") {
         dependsOn(commonMain)
-        // mixins.from("src/common/26.1/main/resources/$id.26_1.mixins.json")
+         mixins.from("src/common/26.1/main/resources/$id.26_1.mixins.json")
     }
 
     // endregion
@@ -567,7 +628,7 @@ cloche {
                 it.jvmArguments(
                     "-Dmixin.debug.verbose=true",
                     "-Dmixin.debug.export=true",
-                    "-Dclasstransform.dumpClasses=true"
+                    "-Dclasstransform.dumpClasses=true",
                 )
             }
         }
@@ -602,6 +663,11 @@ cloche {
             }
         }
 
+        dependencies {
+            modImplementation(catalog.fabric.permissions.mc20) {
+                isTransitive = false
+            }
+        }
     }
 
     val fabric211 = fabric("fabric:21.1") {
@@ -618,6 +684,11 @@ cloche {
             }
         }
 
+        dependencies {
+            modImplementation(catalog.fabric.permissions.mc20) {
+                isTransitive = false
+            }
+        }
     }
 
     val fabric261 = fabric("fabric:26.1") {
@@ -631,6 +702,12 @@ cloche {
                 version {
                     start = "26.1"
                 }
+            }
+        }
+
+        dependencies {
+            modImplementation(catalog.fabric.permissions.mc26) {
+                isTransitive = false
             }
         }
     }
@@ -685,7 +762,7 @@ cloche {
             named<Jar>(lowerCamelCaseGradleName(featureName, "jar")) {
                 manifest {
                     attributes(
-                        "ForgeVariant" to "LexForge"
+                        "ForgeVariant" to "LexForge",
                     )
                 }
             }
@@ -737,7 +814,7 @@ cloche {
             named<Jar>(lowerCamelCaseGradleName(featureName, "jar")) {
                 manifest {
                     attributes(
-                        "ForgeVariant" to "NeoForge"
+                        "ForgeVariant" to "NeoForge",
                     )
                 }
             }
@@ -775,7 +852,7 @@ cloche {
             named<Jar>(lowerCamelCaseGradleName(featureName, "jar")) {
                 manifest {
                     attributes(
-                        "ForgeVariant" to "NeoForge"
+                        "ForgeVariant" to "NeoForge",
                     )
                 }
             }
@@ -788,11 +865,16 @@ cloche {
 
     // region Fabric Container
 
-    fabricContainer = container(loader = MinecraftModLoader.fabric) {
+    val fabricContainer = container(loader = MinecraftModLoader.fabric) {
         val metadataDirectory = project.layout.buildDirectory.dir("generated")
             .map { it.dir("metadata").dir(featureName) }
         val generateModJson =
-            tasks.register<GenerateFabricModJson>(lowerCamelCaseGradleName(featureName, "generateModJson")) {
+            tasks.register<GenerateFabricModJson>(
+                lowerCamelCaseGradleName(
+                    featureName,
+                    "generateModJson",
+                ),
+            ) {
                 modId = "${id}_container"
                 metadata = objects.newInstance(FabricMetadata::class.java, fabric201).apply {
                     license.value(cloche.metadata.license)
@@ -818,7 +900,7 @@ cloche {
 
     // region Forge Container
 
-    forgeContainer = container(loader = MinecraftModLoader.forge) {
+    val forgeContainer = container(loader = MinecraftModLoader.forge) {
         dependencies {
             includeTarget(forgeGame)
         }
@@ -826,7 +908,7 @@ cloche {
         jar {
             manifest {
                 attributes(
-                    "FMLModType" to "GAMELIBRARY"
+                    "FMLModType" to "GAMELIBRARY",
                 )
             }
         }
@@ -836,56 +918,70 @@ cloche {
 
     // region NeoForge Container
 
-    neoforgeContainer = container(loader = MinecraftModLoader.neoforge) {
+    val neoforgeContainer = container(loader = MinecraftModLoader.neoforge) {
 
-        val neoforgeMergedJar = tasks.register<ShadowJar>(lowerCamelCaseGradleName(featureName, "mergedJar")) {
-            group = "build"
-            archiveClassifier = "${loader.toString().lowercase()}-merged"
-            destinationDirectory = intermediateOutputsDirectory
-            configurations = emptyList()
+        val neoforgeMergedJar =
+            tasks.register<ShadowJar>(lowerCamelCaseGradleName(featureName, "mergedJar")) {
+                group = "build"
+                archiveClassifier = "${loader.toString().lowercase()}-merged"
+                destinationDirectory = intermediateOutputsDirectory
+                configurations = emptyList()
 
-            for (target in listOf(neoforgeGame261, neoforgeGame211)) {
-                val output = tasks.named<Jar>(target.includeJarTaskName).flatMap { it.archiveFile }
-                from(project.zipTree(output))
+                for (target in listOf(neoforgeGame261, neoforgeGame211)) {
+                    val output =
+                        tasks.named<Jar>(target.includeJarTaskName).flatMap { it.archiveFile }
+                    from(project.zipTree(output))
 
-                manifest.fromJars(serviceOf(), output)
+                    manifest.fromJars(serviceOf(), output)
+                }
+
+                mergeServiceFiles()
+                append("META-INF/accesstransformer.cfg")
+                transform(PreserveFirstFoundResourceTransformer::class.java)
             }
 
-            mergeServiceFiles()
-            append("META-INF/accesstransformer.cfg")
-            transform(PreserveFirstFoundResourceTransformer::class.java)
-        }
+        val neoforgeMergedDevJar =
+            tasks.register<ShadowJar>(lowerCamelCaseGradleName(featureName, "mergedDevJar")) {
+                group = "build"
+                archiveClassifier = "${loader.toString().lowercase()}-merged-dev"
+                destinationDirectory = intermediateOutputsDirectory
+                configurations = emptyList()
 
-        val neoforgeMergedDevJar = tasks.register<ShadowJar>(lowerCamelCaseGradleName(featureName, "mergedDevJar")) {
-            group = "build"
-            archiveClassifier = "${loader.toString().lowercase()}-merged-dev"
-            destinationDirectory = intermediateOutputsDirectory
-            configurations = emptyList()
+                for (target in listOf(neoforgeGame261, neoforgeGame211)) {
+                    val output = tasks.named<Jar>(target.jarTaskName).flatMap { it.archiveFile }
+                    from(project.zipTree(output))
 
-            for (target in listOf(neoforgeGame261, neoforgeGame211)) {
-                val output = tasks.named<Jar>(target.jarTaskName).flatMap { it.archiveFile }
-                from(project.zipTree(output))
+                    manifest.fromJars(serviceOf(), output)
+                }
 
-                manifest.fromJars(serviceOf(), output)
+                mergeServiceFiles()
+                append("META-INF/accesstransformer.cfg")
+                transform(PreserveFirstFoundResourceTransformer::class.java)
             }
-
-            mergeServiceFiles()
-            append("META-INF/accesstransformer.cfg")
-            transform(PreserveFirstFoundResourceTransformer::class.java)
-        }
 
         val mergedRuntimeElements =
-            configurations.register(lowerCamelCaseGradleName(featureName, "mergedRuntimeElements")) {
+            configurations.register(
+                lowerCamelCaseGradleName(
+                    featureName,
+                    "mergedRuntimeElements",
+                ),
+            ) {
                 isCanBeResolved = false
                 isCanBeConsumed = true
 
                 attributes {
                     attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
                     attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category.LIBRARY))
-                    attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements.JAR))
+                    attribute(
+                        LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE,
+                        objects.named(LibraryElements.JAR),
+                    )
                     attribute(TargetAttributes.MOD_LOADER, loader)
                     attribute(INCLUDE_TRANSFORMED_OUTPUT_ATTRIBUTE, false)
-                    attribute(IncludeTransformationStateAttribute.ATTRIBUTE, IncludeTransformationStateAttribute.None)
+                    attribute(
+                        IncludeTransformationStateAttribute.ATTRIBUTE,
+                        IncludeTransformationStateAttribute.None,
+                    )
                     attribute(REMAPPED_ATTRIBUTE, false)
                 }
 
@@ -893,17 +989,28 @@ cloche {
             }
 
         val mergedDevRuntimeElements =
-            configurations.register(lowerCamelCaseGradleName(featureName, "mergedDevRuntimeElements")) {
+            configurations.register(
+                lowerCamelCaseGradleName(
+                    featureName,
+                    "mergedDevRuntimeElements",
+                ),
+            ) {
                 isCanBeResolved = false
                 isCanBeConsumed = true
 
                 attributes {
                     attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
                     attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category.LIBRARY))
-                    attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements.JAR))
+                    attribute(
+                        LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE,
+                        objects.named(LibraryElements.JAR),
+                    )
                     attribute(TargetAttributes.MOD_LOADER, loader)
                     attribute(INCLUDE_TRANSFORMED_OUTPUT_ATTRIBUTE, false)
-                    attribute(IncludeTransformationStateAttribute.ATTRIBUTE, IncludeTransformationStateAttribute.None)
+                    attribute(
+                        IncludeTransformationStateAttribute.ATTRIBUTE,
+                        IncludeTransformationStateAttribute.None,
+                    )
                     attribute(REMAPPED_ATTRIBUTE, true)
                     attribute(RemapNamespaceAttribute.ATTRIBUTE, RemapNamespaceAttribute.INITIAL)
                 }
@@ -919,7 +1026,7 @@ cloche {
         jar {
             manifest {
                 attributes(
-                    "FMLModType" to "GAMELIBRARY"
+                    "FMLModType" to "GAMELIBRARY",
                 )
             }
         }
@@ -942,6 +1049,10 @@ cloche {
             modRuntimeOnly(skipIncludeTransformation(project(":"))) {
                 isTransitive = false
             }
+
+            modRuntimeOnly(catalog.fabric.permissions.mc20) {
+                isTransitive = false
+            }
         }
     }
 
@@ -954,6 +1065,10 @@ cloche {
             modRuntimeOnly(skipIncludeTransformation(project(":"))) {
                 isTransitive = false
             }
+
+            modRuntimeOnly(catalog.fabric.permissions.mc20) {
+                isTransitive = false
+            }
         }
     }
 
@@ -964,6 +1079,10 @@ cloche {
 
         dependencies {
             modRuntimeOnly(skipIncludeTransformation(project(":"))) {
+                isTransitive = false
+            }
+
+            modRuntimeOnly(catalog.fabric.permissions.mc26) {
                 isTransitive = false
             }
         }
@@ -1168,7 +1287,10 @@ cloche {
                         outgoing.variants.create("remapped") {
                             attributes {
                                 attribute(REMAPPED_ATTRIBUTE, true)
-                                attribute(RemapNamespaceAttribute.ATTRIBUTE, RemapNamespaceAttribute.INITIAL)
+                                attribute(
+                                    RemapNamespaceAttribute.ATTRIBUTE,
+                                    RemapNamespaceAttribute.INITIAL,
+                                )
                             }
                             artifact(shadowMergedDevJar)
                         }
@@ -1187,7 +1309,7 @@ cloche {
                 testTargets.forEach { target ->
                     for (variant in listOf(
                         "${target.featureName}ApiElements",
-                        "${target.featureName}RuntimeElements"
+                        "${target.featureName}RuntimeElements",
                     )) {
                         configurations.named(variant) {
                             withVariantsFromConfiguration(this) {
@@ -1275,39 +1397,3 @@ val MinecraftTarget.decompileMinecraftTaskName: String
     get() = lowerCamelCaseGradleName("decompile", featureName, "minecraft")
 
 // endregion
-
-// region Tasks
-
-class ForgeMetadataTransformer : ResourceTransformer {
-    private val gson = GsonBuilder().setPrettyPrinting().create()
-    private val collected = JsonArray()
-    private val path = "META-INF/jarjar/metadata.json"
-    private var transformed = false
-
-    override fun canTransformResource(element: FileTreeElement): Boolean {
-        return element.path == path
-    }
-
-    override fun transform(context: TransformerContext) {
-        context.inputStream.use { input ->
-            val json = gson.fromJson(input.reader(Charsets.UTF_8), JsonObject::class.java)
-            val jars = json.getAsJsonArray("jars")
-            jars?.forEach { collected.add(it) }
-            transformed = true
-        }
-    }
-
-    override fun hasTransformedResource(): Boolean = transformed
-
-    override fun modifyOutputStream(os: ZipOutputStream, preserveFileTimestamps: Boolean) {
-        if (collected.size() == 0) return
-
-        val merged = JsonObject().apply {
-            add("jars", collected)
-        }
-
-        os.putNextEntry(ZipEntry(path))
-        os.write(gson.toJson(merged).toByteArray(StandardCharsets.UTF_8))
-        os.closeEntry()
-    }
-}

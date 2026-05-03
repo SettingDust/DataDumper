@@ -8,57 +8,63 @@ import kotlin.io.path.createParentDirectories
 import kotlin.io.path.div
 import kotlin.io.path.writeBytes
 import kotlin.io.path.writer
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import net.minecraft.registry.Registry
-import net.minecraft.registry.RegistryKey
-import net.minecraft.registry.RegistryOps
-import net.minecraft.registry.RegistryWrapper
-import net.minecraft.registry.entry.RegistryEntry
-import net.minecraft.resource.Resource
-import net.minecraft.server.command.ServerCommandSource
-import net.minecraft.text.ClickEvent
-import net.minecraft.text.HoverEvent
-import net.minecraft.text.Text
-import net.minecraft.util.Identifier
-import net.minecraft.util.JsonHelper
+import net.minecraft.commands.CommandSourceStack
+import net.minecraft.core.Holder
+import net.minecraft.core.Registry
+import net.minecraft.core.RegistryAccess
+import net.minecraft.network.chat.Component
+import net.minecraft.resources.RegistryOps
+import net.minecraft.resources.ResourceKey
+import net.minecraft.server.packs.resources.Resource
+import net.minecraft.util.GsonHelper
+import settingdust.data_dumper.util.CommonIdentifier
+import settingdust.data_dumper.util.ComponentEventAdapter
+import settingdust.data_dumper.util.DataResultAdapter.Companion.getOrThrow
 import settingdust.data_dumper.util.LoaderAdapter
+import settingdust.data_dumper.util.ResourceKeyAdapter.Companion.getIdentifier
 
 object RegistryDumper {
     val output get() = LoaderAdapter.gameDir / ".datadumper"
 
     @JvmStatic
-    fun dumpFailedEntry(identifier: Identifier, resource: Resource) {
+    fun dumpFailedEntry(identifier: CommonIdentifier, resource: Resource) {
         val outputFile = output / identifier.namespace / identifier.path
         outputFile.createParentDirectories()
-        outputFile.writeBytes(resource.inputStream.readAllBytes())
+        outputFile.writeBytes(resource.open().readAllBytes())
     }
 
     fun dumpEntries(
-        entries: Iterable<RegistryEntry<Any>>,
-        registryKey: RegistryKey<Registry<Any>>,
-        registryManager: RegistryWrapper.WrapperLookup,
-        codecProvider: (RegistryKey<out Registry<*>>) -> Codec<Any>?
+        entries: Iterable<Holder<Any>>,
+        registryKey: ResourceKey<Registry<Any>>,
+        registryManager: RegistryAccess,
+        codecProvider: (ResourceKey<out Registry<*>>) -> Codec<Any>?
     ) {
         val codec = codecProvider(registryKey) ?: return
         for (entry in entries) {
-            GlobalScope.launch(Dispatchers.IO) {
-                val registryOps = RegistryOps.of(JsonOps.INSTANCE, registryManager)
+            CoroutineScope(
+                CoroutineName(
+                    "Dump ${
+                        entry.unwrapKey().orElseThrow().getIdentifier()
+                    }",
+                ),
+            ).launch(Dispatchers.IO) {
+                val registryOps = RegistryOps.create(JsonOps.INSTANCE, registryManager)
                 val outputFile =
                     output /
-                        entry.key.orElseThrow().value.namespace /
-                        registryKey.value.path /
-                        "${entry.key.orElseThrow().value.path}.json"
+                        entry.unwrapKey().orElseThrow().getIdentifier().namespace /
+                        registryKey.getIdentifier().path /
+                        "${entry.unwrapKey().orElseThrow().getIdentifier().path}.json"
                 outputFile.createParentDirectories()
 
                 outputFile.writer().use { writer ->
                     val jsonWriter = JsonWriter(writer).apply { setIndent("  ") }
-                    JsonHelper.writeSorted(
+                    GsonHelper.writeValue(
                         jsonWriter,
-                        codec.encodeStart(registryOps, entry.value()).getOrThrow(false) {
-                            error(it)
-                        },
+                        codec.encodeStart(registryOps, entry.value()).getOrThrow(),
                         null,
                     )
                 }
@@ -67,14 +73,14 @@ object RegistryDumper {
     }
 
     fun sendRegistries(
-        context: CommandContext<ServerCommandSource>,
-        keys: List<RegistryKey<*>>
+        context: CommandContext<CommandSourceStack>,
+        keys: List<ResourceKey<*>>
     ) {
-        if (context.source.isExecutedByPlayer) {
-            context.source.sendFeedback(
+        if (context.source.isPlayer) {
+            context.source.sendSuccess(
                 {
                     val feedback =
-                        Text.translatable(
+                        Component.translatable(
                             "commands.datadumper.registries.feedback.player",
                             keys.size,
                         )
@@ -82,16 +88,14 @@ object RegistryDumper {
                     feedback.style =
                         feedback.style
                             .withHoverEvent(
-                                HoverEvent(
-                                    HoverEvent.Action.SHOW_TEXT,
-                                    Text.literal("/${context.input}\n")
-                                        .append(Text.translatable("datadumper.message.clickToCopy")),
+                                ComponentEventAdapter.showText(
+                                    Component.literal("/${context.input}\n")
+                                        .append(Component.translatable("datadumper.message.clickToCopy")),
                                 ),
                             )
                             .withClickEvent(
-                                ClickEvent(
-                                    ClickEvent.Action.COPY_TO_CLIPBOARD,
-                                    keys.joinToString("\n") { it.value.toString() },
+                                ComponentEventAdapter.copyToClipboard(
+                                    keys.joinToString("\n") { it.getIdentifier().toString() },
                                 ),
                             )
 
@@ -101,8 +105,8 @@ object RegistryDumper {
             )
         } else {
             for (key in keys) {
-                context.source.sendFeedback(
-                    { Text.literal(key.value.toString()) },
+                context.source.sendSuccess(
+                    { Component.literal(key.getIdentifier().toString()) },
                     false,
                 )
             }

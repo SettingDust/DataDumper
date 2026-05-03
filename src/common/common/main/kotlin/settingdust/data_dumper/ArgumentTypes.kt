@@ -9,12 +9,14 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import java.util.concurrent.CompletableFuture
 import java.util.regex.Pattern
 import kotlin.jvm.optionals.getOrNull
-import net.minecraft.command.CommandSource
-import net.minecraft.command.argument.IdentifierArgumentType
-import net.minecraft.registry.RegistryKey
-import net.minecraft.server.command.ServerCommandSource
-import net.minecraft.text.Text
-import net.minecraft.util.Identifier
+import net.minecraft.commands.CommandSourceStack
+import net.minecraft.commands.SharedSuggestionProvider
+import net.minecraft.network.chat.Component
+import settingdust.data_dumper.util.CommonIdentifier
+import settingdust.data_dumper.util.RegistryAccessAdapter.Companion.lookupRegistry
+import settingdust.data_dumper.util.RegistryAdapter.Companion.getTagIds
+import settingdust.data_dumper.util.ResourceKeyAdapter
+import settingdust.data_dumper.util.SuggestResourceProvider
 
 class RegexArgumentType : ArgumentType<Pattern> {
     override fun parse(reader: StringReader): Pattern {
@@ -22,16 +24,16 @@ class RegexArgumentType : ArgumentType<Pattern> {
     }
 }
 
-class TagArgumentType : IdentifierArgumentType() {
+class TagArgumentType : ArgumentType<CommonIdentifier> {
     companion object {
         private val NOT_TAG_EXCEPTION =
-            SimpleCommandExceptionType(Text.translatable("datadumper.message.invalidTag"))
+            SimpleCommandExceptionType(Component.translatable("datadumper.message.invalidTag"))
     }
 
-    override fun parse(reader: StringReader): Identifier {
+    override fun parse(reader: StringReader): CommonIdentifier {
         if (reader.canRead() && reader.peek() == '#') {
             reader.skip()
-            return super.parse(reader)
+            return CommonIdentifier.parse(reader.readString())
         }
         throw NOT_TAG_EXCEPTION.create()
     }
@@ -41,21 +43,23 @@ class TagArgumentType : IdentifierArgumentType() {
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
         val source = context.source
-        require(source is CommandSource)
+        require(source is SharedSuggestionProvider)
         val registryKey =
-            RegistryKey.ofRegistry<Any>(context.getArgument("key", Identifier::class.java))
+            ResourceKeyAdapter.createRegistryKey<Any>(
+                context.getArgument(
+                    "key",
+                    CommonIdentifier::class.java,
+                ),
+            )
         val registry =
-            source.registryManager.getOptional(registryKey).getOrNull()
-                ?: if (source is ServerCommandSource) {
-                    source.world.registryManager.getOptional(registryKey).getOrNull()
+            source.registryAccess().lookupRegistry(registryKey).getOrNull()
+                ?: if (source is CommandSourceStack) {
+                    source.level.registryAccess().lookupRegistry(registryKey).getOrNull()
                 } else {
                     null
                 }
                 ?: return Suggestions.empty()
-        return CommandSource.suggestIdentifiers(
-            registry.streamTags().map { it.id },
-            builder,
-            "#",
-        )
+        val tagIds = registry.getTagIds()
+        return SuggestResourceProvider.suggestResource(tagIds, builder, "#")
     }
 }
