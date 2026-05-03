@@ -12,6 +12,7 @@ import kotlin.jvm.optionals.getOrNull
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.SharedSuggestionProvider
 import net.minecraft.network.chat.Component
+import settingdust.data_dumper.util.ArgumentTypeAdapter
 import settingdust.data_dumper.util.CommonIdentifier
 import settingdust.data_dumper.util.RegistryAccessAdapter.Companion.lookupRegistry
 import settingdust.data_dumper.util.RegistryAdapter.Companion.getTagIds
@@ -33,7 +34,7 @@ class TagArgumentType : ArgumentType<CommonIdentifier> {
     override fun parse(reader: StringReader): CommonIdentifier {
         if (reader.canRead() && reader.peek() == '#') {
             reader.skip()
-            return CommonIdentifier.parse(reader.readString())
+            return ArgumentTypeAdapter.identifier().parse(reader)
         }
         throw NOT_TAG_EXCEPTION.create()
     }
