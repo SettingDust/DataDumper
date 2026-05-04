@@ -13,13 +13,13 @@ interface CommonIdentifier {
          * Creates a new [CommonIdentifier] by delegating to the version-specific factory.
          */
         fun of(namespace: String, path: String): CommonIdentifier =
-            IdentifierFactory.create(namespace, path)
+            IdentifierAdapter.create(namespace, path)
 
         /**
          * Parses a string of the form `namespace:path` into a [CommonIdentifier].
-         * Delegates to the version-specific [IdentifierFactory.parse].
+         * Delegates to the version-specific [IdentifierAdapter.parse].
          */
         fun parse(value: String): CommonIdentifier =
-            IdentifierFactory.parse(value)
+            IdentifierAdapter.parse(value)
     }
 }

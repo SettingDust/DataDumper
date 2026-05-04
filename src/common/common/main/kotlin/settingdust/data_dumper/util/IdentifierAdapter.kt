@@ -5,8 +5,8 @@ package settingdust.data_dumper.util
  * Each MC version provides a factory that delegates to the native
  * `ResourceLocation` / `Identifier` constructor.
  */
-interface IdentifierFactory {
-    companion object : IdentifierFactory by ServiceLoaderUtil.findService()
+interface IdentifierAdapter {
+    companion object : IdentifierAdapter by ServiceLoaderUtil.findService()
 
     /**
      * Creates a [CommonIdentifier] backed by the version-specific native class.

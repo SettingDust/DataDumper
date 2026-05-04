@@ -2,10 +2,10 @@ package settingdust.data_dumper.v26_1.util
 
 import net.minecraft.resources.Identifier
 import settingdust.data_dumper.util.CommonIdentifier
-import settingdust.data_dumper.util.IdentifierFactory
+import settingdust.data_dumper.util.IdentifierAdapter
 import settingdust.data_dumper.util.MinecraftVersion
 
-class IdentifierFactory : IdentifierFactory {
+class IdentifierAdapter : IdentifierAdapter {
     init {
         MinecraftVersion.V261.requireCurrent()
     }
