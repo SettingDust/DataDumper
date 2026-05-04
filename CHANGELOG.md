@@ -1,4 +1,19 @@
 
+## [0.6.0] - 2026-05-04
+### :bug: Bug Fixes
+- [`568664a`](https://github.com/SettingDust/DataDumper/commit/568664aaeaef18fe76e88768da40b41cafe05187) - tag parser isn't greedy *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :recycle: Refactors
+- [`d0226a5`](https://github.com/SettingDust/DataDumper/commit/d0226a5647b883a261911fc3a31bfe35739c7695) - copier from template *(commit by [@SettingDust](https://github.com/SettingDust))*
+- [`d9a6bf9`](https://github.com/SettingDust/DataDumper/commit/d9a6bf924585fd832372b3074de9f7db3b7d38d5) - implement version specificed logic *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :white_check_mark: Tests
+- [`8d779a4`](https://github.com/SettingDust/DataDumper/commit/8d779a460ee2f2928ce4984c0034760adbac2fb4) - add gametest *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :wrench: Chores
+- [`c884c2a`](https://github.com/SettingDust/DataDumper/commit/c884c2ae026f1c645bcb0b89ab33487e98664ac0) - remove old code *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.5.4] - 2024-11-06
 ### :bug: Bug Fixes
 - [`6dfb662`](https://github.com/SettingDust/DataDumper/commit/6dfb662b7a066aa9f3a6cd2df92f02b3470abf41) - avoid the duplicated refmap json name *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -69,3 +84,4 @@
 [0.5.2]: https://github.com/SettingDust/DataDumper/compare/0.5.1...0.5.2
 [0.5.3]: https://github.com/SettingDust/DataDumper/compare/0.5.2...0.5.3
 [0.5.4]: https://github.com/SettingDust/DataDumper/compare/0.5.3...0.5.4
+[0.6.0]: https://github.com/SettingDust/DataDumper/compare/0.5.4...0.6.0
