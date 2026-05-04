@@ -46,7 +46,7 @@ plugins {
     kotlin("plugin.serialization") version "2.3.20"
     id("com.palantir.git-version") version "5.0.0"
     id("com.gradleup.shadow") version "9.4.1"
-    id("earth.terrarium.cloche") version "0.18.11-dust.8"
+    id("earth.terrarium.cloche") version "0.18.11-dust.16"
 }
 
 // region Project Properties
@@ -562,15 +562,15 @@ cloche {
 
     val common201 = common("common:20.1") {
         dependsOn(commonMain)
-         mixins.from("src/common/20.1/main/resources/$id.20_1.mixins.json")
+        mixins.from("src/common/20.1/main/resources/$id.20_1.mixins.json")
     }
     val common211 = common("common:21.1") {
         dependsOn(commonMain)
-         mixins.from("src/common/21.1/main/resources/$id.21_1.mixins.json")
+        mixins.from("src/common/21.1/main/resources/$id.21_1.mixins.json")
     }
     val common261 = common("common:26.1") {
         dependsOn(commonMain)
-         mixins.from("src/common/26.1/main/resources/$id.26_1.mixins.json")
+        mixins.from("src/common/26.1/main/resources/$id.26_1.mixins.json")
     }
 
     // endregion
@@ -652,7 +652,18 @@ cloche {
         dependsOn(common201, fabricCommon)
         minecraftVersion = "1.20.1"
 
+        test()
+
+        runs {
+            test()
+        }
+
         metadata {
+            entrypoint("fabric-gametest") {
+                adapter = "kotlin"
+                value = "$group.fabric.v20_1.test.DataDumperGameTest"
+            }
+
             dependency {
                 modId = "minecraft"
                 type = CommonMetadata.Dependency.Type.Required
@@ -674,7 +685,18 @@ cloche {
         dependsOn(common211, fabricCommon)
         minecraftVersion = "1.21.1"
 
+        test()
+
+        runs {
+            test()
+        }
+
         metadata {
+            entrypoint("fabric-gametest") {
+                adapter = "kotlin"
+                value = "$group.fabric.v21_1.test.DataDumperGameTest"
+            }
+
             dependency {
                 modId = "minecraft"
                 type = CommonMetadata.Dependency.Type.Required
@@ -695,7 +717,18 @@ cloche {
         dependsOn(common261, fabricCommon)
         minecraftVersion = "26.1.2"
 
+        test()
+
+        runs {
+            test()
+        }
+
         metadata {
+            entrypoint("fabric-gametest") {
+                adapter = "kotlin"
+                value = "$group.fabric.v26_1.test.DataDumperGameTest"
+            }
+
             dependency {
                 modId = "minecraft"
                 type = CommonMetadata.Dependency.Type.Required
@@ -737,10 +770,6 @@ cloche {
                 modId = "preloading_tricks"
                 type = CommonMetadata.Dependency.Type.Recommended
             }
-            dependency {
-                modId = "klf"
-                type = CommonMetadata.Dependency.Type.Required
-            }
         }
 
         repositories {
@@ -755,7 +784,7 @@ cloche {
             implementation("org.spongepowered:mixin:0.8.7")
             compileOnly(catalog.mixinextras.common)
             implementation(catalog.mixinextras.forge)
-            modImplementation(catalog.klf.mc20.forge)
+            modCompileOnly(catalog.klf.mc20.forge)
         }
 
         tasks {
@@ -799,10 +828,6 @@ cloche {
             dependency {
                 modId = "preloading_tricks"
                 type = CommonMetadata.Dependency.Type.Recommended
-            }
-            dependency {
-                modId = "klf"
-                type = CommonMetadata.Dependency.Type.Required
             }
         }
 
@@ -1101,6 +1126,10 @@ cloche {
             }
         }
 
+        configurations.named(lowerCamelCaseGradleName(featureName, "legacyClasspath")) {
+            exclude("org.jetbrains.kotlin")
+        }
+
         dependencies {
             modRuntimeOnly(project(":")) {
                 isTransitive = false
@@ -1109,6 +1138,8 @@ cloche {
             legacyClasspath(catalog.preloadingTricks) {
                 isTransitive = false
             }
+
+            legacyClasspath(catalog.klf.mc20.forge)
         }
     }
 
@@ -1133,6 +1164,8 @@ cloche {
             legacyClasspath(catalog.preloadingTricks) {
                 isTransitive = false
             }
+
+            legacyClasspath(catalog.klf.mc21.neoforge)
         }
     }
 
@@ -1153,6 +1186,8 @@ cloche {
             legacyClasspath(catalog.preloadingTricks) {
                 isTransitive = false
             }
+
+            legacyClasspath(catalog.klf.mc26.neoforge)
         }
     }
 
