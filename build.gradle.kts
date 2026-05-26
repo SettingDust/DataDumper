@@ -702,6 +702,7 @@ cloche {
                 type = CommonMetadata.Dependency.Type.Required
                 version {
                     start = "1.21"
+                    end = "1.22"
                 }
             }
         }
