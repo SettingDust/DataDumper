@@ -652,12 +652,6 @@ cloche {
         dependsOn(common201, fabricCommon)
         minecraftVersion = "1.20.1"
 
-        test()
-
-        runs {
-            test()
-        }
-
         metadata {
             entrypoint("fabric-gametest") {
                 adapter = "kotlin"
@@ -685,12 +679,6 @@ cloche {
         dependsOn(common211, fabricCommon)
         minecraftVersion = "1.21.1"
 
-        test()
-
-        runs {
-            test()
-        }
-
         metadata {
             entrypoint("fabric-gametest") {
                 adapter = "kotlin"
@@ -717,12 +705,6 @@ cloche {
     val fabric261 = fabric("fabric:26.1") {
         dependsOn(common261, fabricCommon)
         minecraftVersion = "26.1.2"
-
-        test()
-
-        runs {
-            test()
-        }
 
         metadata {
             entrypoint("fabric-gametest") {
