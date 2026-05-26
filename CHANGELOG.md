@@ -1,4 +1,12 @@
 
+## [0.6.1] - 2026-05-26
+### :bug: Bug Fixes
+- [`ec2f26c`](https://github.com/SettingDust/DataDumper/commit/ec2f26c7dca6974da6590e452915588b53b0c56c) - wrong version range of 1.21 fabric *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :recycle: Refactors
+- [`66b9ccb`](https://github.com/SettingDust/DataDumper/commit/66b9ccbe98a3264f450d8057f099362485739ee8) - rename identifier factory *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.6.0] - 2026-05-04
 ### :bug: Bug Fixes
 - [`568664a`](https://github.com/SettingDust/DataDumper/commit/568664aaeaef18fe76e88768da40b41cafe05187) - tag parser isn't greedy *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -85,3 +93,4 @@
 [0.5.3]: https://github.com/SettingDust/DataDumper/compare/0.5.2...0.5.3
 [0.5.4]: https://github.com/SettingDust/DataDumper/compare/0.5.3...0.5.4
 [0.6.0]: https://github.com/SettingDust/DataDumper/compare/0.5.4...0.6.0
+[0.6.1]: https://github.com/SettingDust/DataDumper/compare/0.6.0...0.6.1
